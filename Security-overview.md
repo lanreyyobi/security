@@ -160,9 +160,9 @@
 - **Clean Up**: Regularly remove unused images and containers to minimize the potential attack surface.
 
 ### 13. **Use scanning tool**
-- snyk
-- whitesource
-- trivy  https://aquasecurity.github.io/trivy/v0.19.2/getting-started/installation/
+- Snyk
+- Whitesource
+- Trivy  https://aquasecurity.github.io/trivy/v0.19.2/getting-started/installation/
 
 
 # C) PHASE 3: Deploy time security
@@ -171,8 +171,8 @@
   - Choice of your operating system
    - Non essential processes - /etc/init.d
    - Host based firewalling (SG, ACL, NACL)
-   - Allow /open required ports
-   - Default ports -Jenkins/8080 - reconfigure default port / use custom ports Jenkins /8031/8045
+   - Configure SG will only required ports
+   - Use custom ports instead of default ports 
 
 ## b) Cluster hardening:
 
