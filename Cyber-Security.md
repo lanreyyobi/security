@@ -67,7 +67,7 @@ Understand the security concepts of information assurance:
       defense in depth, Network Access Control (NAC) (segmentation for embedded systems, Internet of Things (IoT))
 - Cloud (e.g., service-level agreement (SLA), managed service provider (MSP), Software as a Service (SaaS), Infrastructure as a Service (IaaS), Platform as a Service (PaaS), hybrid)
 
-# 5. Operation Security:
+## 5. Operation Security:
 **a) Understand data security:**
 - Encryption (e.g., symmetric, asymmetric, hashing)
 - Data handling (e.g., destruction, retention, classification, labeling)
