@@ -2,55 +2,63 @@
 - Infrastructure security is the process of protecting the hardware, software, networks, and other components of an organization’s IT infrastructure from security threats. 
 - Infrastructure security includes a range of technologies and policies, such as firewalls, intrusion detection systems, and access controls.
 
-**A) PHASE 1: Infrastructure provisioning / configuration**
+# **A) PHASE 1: Infrastructure provisioning / configuration**
 ## a) Terraform security:
 **i) Versioning and Release management:**
 - Use versioning and VCS  to manage terraform configurations and track changes over time
 - Follow semantic version conventions for terraform modules and releases.
 - Don't commit the `.tfstate` file in VCS
+  
 **ii) State management:**
 - Store state files remotely ina shared location
 - Use remote state locking to prevent concurrent access and potential data corruption
 - Regularly backup terraform state files and implement disaster recovery procedures.
+  
 **iii) Modularization:**
 - Organise terraform code into reusable modules
 - use modules to encapsulate common configurations and promote code reuse across projects
 - Parameterize modules to make them flexible and configurable for different use cases.
+  
 **iv) Variable management:**
 - Use variables to parameterize terraform configurations and make them reusable
 - Define variable defaults and validation rules to ensure proper usage
 - Store sensitive or environment specific variables securely using terraform input variable mechanisms or external secret managers
+  
 **v) Code review and testing:**
 - conduct code reviews to ensure adherence to best practices, consistency and quality
 - Implement automated tests to detect syntax errors, formatting issues and potential resource conflicts.
 - Integrate terraform with CICD pipelines to automate testing, validation and deployment processes
+  
 **vi) Monitoring and maintenance:**
 - Monitor terraform deployments and infrastructure changes using logging, monitoring and alerting tools
 - implement automated backups and disaster recovery procedures to terraform state files and infrastructure resources
 - Stay tunes for terraform updates, releases and best practices through official documentation.
+  
 **vii) Dependency management:**
 - Explicitly define dependencies between resources using terraform's resource attributes and expressions
 - Use terraform interpolation syntax to reference attributes from other resources
 - leverage implicit dependencies to ensure resources are created and updated in the correct order
+  
 **viii) Security and complaince:**
 - Follow security best practices for managing access to terraform configurations and state files.
 - Implement role based access control (RBAC) and least privilege principles to restrict access to sensitive resources or operations.
 - Regularly review and audit terraform configurations for compliance with security policies and industry regulations.
+  
 **x) Secret management**
 - Store sensitive data iin external secret management tools
 - Use environment variables in CICD pipelines
   
-# b) Configuration management:
+## b) Configuration management:
   - Secrets / use ansible secret manager- ansible vault
   - don't expose sensitive data in ansible outputs
   - avoid single target login names / using generic names eg admin 
-# c) Host hardening:
+## c) Host hardening:
    - Choice of your operating system
    - Non essential processes - /etc/init.d
    - Host based firewalling (SG, ACL, NACL)
    - Allow / open required ports
    - Use custom ports instead of Default ports 
-# d) Private subnets: closing our resources to the public
+## d) Private subnets: closing our resources to the public
    - Use private networks  for our resources
    - Configure `loadBalancer` to direct or control traffic from the internet to resources
    - Use security groups as firewalls around resources in our VPCs.
@@ -58,51 +66,51 @@
    - Configure access entries (EKS) for authentication and authorization in to EKS
 
 
-**B) PHASE 2: Build time security**
+# **B) PHASE 2: Build time security**
 
-### a) Git / Git Hub DVCS:
+## a) Git / Git Hub DVCS:
 
-# 1. Access Control:
+### 1. Access Control:
 - **Limit Access**: Only give access to those who absolutely need it. Use the principle of least privilege.
 - **Role-Based Access Control (RBAC)**: Implement roles with specific permissions tailored to user needs.
 
-# 2. Authentication
+### 2. Authentication
 - **Strong Authentication Methods**: Use SSH keys or personal access tokens instead of passwords for Git operations.
 - **Two-Factor Authentication (2FA)**: Enable 2FA on platforms like GitHub, GitLab, or Bitbucket to add an extra layer of security.
 
-# 3. Encryption
+### 3. Encryption
 - **Transport Layer Security (TLS)**: Ensure that data in transit is encrypted using HTTPS or SSH.
 - **Repository Encryption**: Consider encrypting sensitive files in the repository itself using tools like Git-crypt.
 
-# 4. Secrets Management
+### 4. Secrets Management
 - **Avoid Hardcoding Secrets**: Do not store sensitive information (API keys, passwords) directly in the codebase.
 - **Use Environment Variables**: Manage secrets through environment variables or secret management tools.
 
-# 5. Auditing and Monitoring
+### 5. Auditing and Monitoring
 - **Audit Logs**: Regularly review access and activity logs for suspicious behavior.
 - **Automated Monitoring Tools**: Use tools that monitor repository changes and alert for unauthorized access.
 
-# 6. Branch Protection
+### 6. Branch Protection
 - **Protected Branches**: Set up rules to protect critical branches (e.g., `main` or `master`) from direct pushes, requiring pull requests and reviews instead.
 - **Require Reviews**: Implement mandatory code reviews to catch issues before merging.
 
-# 7. Regular Updates and Patching
+### 7. Regular Updates and Patching
 - **Keep Tools Updated**: Regularly update Git clients, libraries, and associated tools to protect against known vulnerabilities.
 - **Monitor for Vulnerabilities**: Stay informed about vulnerabilities in Git and third-party tools and apply patches promptly.
 
-# 8. Backups
+### 8. Backups
 - **Regular Backups**: Implement a robust backup strategy for repositories to protect against data loss.
 - **Test Restores**: Regularly test backup restores to ensure data integrity and availability.
 
-# 9. Education and Training
+### 9. Education and Training
 - **Developer Awareness**: Train developers on secure coding practices and the importance of Git security.
 - **Phishing Awareness**: Educate users about phishing attacks that may target Git credentials.
 
-# 10. Repository Hygiene
+### 10. Repository Hygiene
 - **Clean Up History**: Regularly clean the repository’s history to remove sensitive data. Tools like `git filter-repo` can help.
 - **Use `.gitignore`**: Maintain a proper `.gitignore` file to avoid committing sensitive files or directories.
 
-# b) Dealing with images:
+## b) Dealing with images:
 
 ### 1. **Use Official and Trusted Images**
 - **Base Images**: Start from official images provided by trusted sources (e.g., Docker Hub, vendor repositories).
@@ -157,16 +165,16 @@
 - trivy  https://aquasecurity.github.io/trivy/v0.19.2/getting-started/installation/
 
 
-C) PHASE 3: Deploy time security
-=========================================================================================
-### a) Host hardening:
+# C) PHASE 3: Deploy time security
+
+## a) Host hardening:
   - Choice of your operating system
    - Non essential processes - /etc/init.d
    - Host based firewalling (SG, ACL, NACL)
    - Allow /open required ports
    - Default ports -Jenkins/8080 - reconfigure default port / use custom ports Jenkins /8031/8045
 
-### b) Cluster hardening:
+## b) Cluster hardening:
 
 ### 1. **Control Plane Security**
 - **Use Role-Based Access Control (RBAC)**: Implement RBAC to limit user permissions to the minimum required for their roles.
@@ -216,11 +224,8 @@ C) PHASE 3: Deploy time security
 ### 12. **Kubernetes API Rate Limiting**
 - **Rate Limiting**: Configure rate limiting for the Kubernetes API server to mitigate the risk of API abuse and denial of service attacks.
 
-By implementing these practices, you can significantly improve the security posture of your Kubernetes cluster and reduce the risk of vulnerabilities and breaches. Regular reviews and updates to your security practices are also essential as threats evolve.
 
-### c) CI/CD Pipeline:
-
-Securing your CI/CD (Continuous Integration/Continuous Deployment) pipeline is critical for protecting your code, data, and deployment processes. Here are some key security principles to follow:
+## c) CI/CD Pipeline:
 
 ### 1. **Access Control**
 - **Least Privilege**: Implement the principle of least privilege for all users and services involved in the CI/CD pipeline. Only grant permissions necessary for specific tasks.
@@ -270,30 +275,21 @@ Securing your CI/CD (Continuous Integration/Continuous Deployment) pipeline is c
 - **Plan for Breaches**: Develop an incident response plan that outlines steps to take in the event of a security breach affecting the CI/CD pipeline.
 - **Regular Drills**: Conduct regular drills to ensure the team is prepared to respond effectively to security incidents.
 
-By incorporating these principles into your CI/CD pipeline, you can significantly enhance its security and protect your applications from potential vulnerabilities and threats.
-  - scan images using registry scanning service.
-  - Scan the image after the build 
-  - Inline scanning - SonarQube / code quality/vulnerabilities
-   -> Secure CI/CD
-     - Zero trust policy for CI/CD environment
-     - Secure secrets- passwords, access tokens, ssh keys, encryption keys
-     - Access control - 2 factor authentication enabled
-     - Auditing / monitoring - excessive access, access deprecation
-     - organization policies- call out access requirements, separation of responsibilities, secret management, logging
-     and monitoring requirements, audit policies
 
-D) PHASE 4: Run time security
-===========================================
-a) Pod Security Policies (PSPs):
+## D) PHASE 4: Run time security
+
+### a) Pod Security Policies (PSPs):
   - Pod security policies
   - PSP capabilities
   - Pod Security context
   - Limitations of PSP
-b) Process and Application monitoring:
+    
+### b) Process and Application monitoring:
   - Logging - stream logs to an external location with append-only access from within the cluster. This ensures
   that your logs will not be tampered with even in the case of a total cluster compromise.
   -APM - NewRelic, Prometheus / Grafana / ELK
-C) Network security control:
+
+### C) Network security control:
     -> Observability: - the ability to derive actionable insights about the state of K8s from the metrics collected
        - Network Traffic visibility
        - DNS activity logs
@@ -302,14 +298,16 @@ C) Network security control:
        - machine language and anomaly detection - deviation from derived patterns from data over a period of time.
        - enterprise security controls- leverage the data collected from observability strategy to build reports 
        needed to help with compliance standards e.g HIPPA, PCI
- d) Threat defence:
+       
+ ### d) Threat defence:
    - ability to look at malicious activity in the cluster and then defend the cluster from it.
       -> exploit insecure configurations
       -> exploit vulnerability in the application traffic
       -> vulnerability in the code
   - consider both intrusion detection and intrusion prevention
-  -> the key to intrusion detection is OBSERVABILITY.
-e) Security framework:
+  -> the key to intrusion detection is `OBSERVABILITY`.
+    
+### e) Security framework:
    https://attack.mitre.org/matrices/enterprise/cloud/aws/
 
 https://www.microsoft.com/
